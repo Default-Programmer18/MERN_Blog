@@ -3,13 +3,18 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import signup_img from "../assets/signup_img.jpg";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { signInFailure,signInStart,signInSuccess } from "../redux/user/userSlice";
+import { useDispatch ,useSelector} from "react-redux";
 
 const SignIn = () => {
   const navigate=useNavigate();
+  const dispatch=useDispatch();
+
+  //from glovbal state
+  const {loading,error:errorMessage}=useSelector(state=>state.user)
 
   const [formData, setFormData] = useState({});
-  const[loading,setLoading] = useState(false);
-  const [errorMessage,setErrorMessage] = useState(null);
+
   
   //show password code
   const [showPassword, setShowPassword] = useState(false);
@@ -22,12 +27,11 @@ const SignIn = () => {
     e.preventDefault();
     if( !formData.password|| !formData.email)
     {
-      return setErrorMessage("All fields are required...");
+      return dispatch(signInFailure(("All fields are required...")));
     }
     //console.log(formData);
     try{
-      setLoading(true);
-      setErrorMessage(null)
+     dispatch(signInStart)
        const res=await fetch('/api/auth/sign-in',{
           method: 'POST',
           headers:{
@@ -38,18 +42,18 @@ const SignIn = () => {
 
      const data= await res.json()
      // console.log(data)
-     setLoading(false);
+ 
       if(data.success==false)
-      return setErrorMessage(data.message)
+      dispatch( signInFailure(data.message) )
        
       
       if(res.ok)
-      navigate("/")
+      {dispatch(signInSuccess(data.message))
+      navigate("/")}
        
     }catch(error)
     {
-      setErrorMessage(error.message)
-      setLoading(false)
+    dispatch(signInFailure(error.message))
 
     }
     
