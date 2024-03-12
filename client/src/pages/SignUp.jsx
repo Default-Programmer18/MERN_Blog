@@ -227,9 +227,9 @@ const handleConfirmPass=(e)=>{
             Continue with Google
           </Button>
 
-          <div className="flex flex-row text-sm">
+          <div className="flex flex-row text-sm mt-3">
             <span>Have an account?</span>
-            <Link to="/sign-in" className="text-sky-500">
+            <Link to="/sign-in" className="text-sky-500 ml-1 text-sm ">
               Sign in
             </Link>
           </div>
