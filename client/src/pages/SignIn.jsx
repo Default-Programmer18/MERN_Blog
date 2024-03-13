@@ -39,17 +39,18 @@ const SignIn = () => {
           },
           body:JSON.stringify(formData)
        });
-
-     const data= await res.json()
-     // console.log(data)
- 
-      if(data.success==false)
-      dispatch( signInFailure(data.message) )
+     
+        
+       const data= await res.json();
+       if ( data.success === false) {
+        console.log(data);
+         dispatch(signInFailure(data.message));}
        
-      
-      if(res.ok)
-      {dispatch(signInSuccess(data.message))
-      navigate("/")}
+ 
+       if (res.ok) {
+         dispatch(signInSuccess(data));
+         navigate('/');
+       }
        
     }catch(error)
     {
