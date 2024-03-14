@@ -1,10 +1,13 @@
-import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
-import React, { useState } from "react";
+import { Alert, Button, Label, Spinner, TextInput, Toast } from "flowbite-react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import signup_img from "../assets/signup_img.jpg";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { signInFailure,signInStart,signInSuccess } from "../redux/user/userSlice";
 import { useDispatch ,useSelector} from "react-redux";
+import OAuth from "../components/OAuth";
+import { HiExclamation} from "react-icons/hi"
+
 
 const SignIn = () => {
   const navigate=useNavigate();
@@ -12,12 +15,17 @@ const SignIn = () => {
 
   //from glovbal state
   const {loading,error:errorMessage}=useSelector(state=>state.user)
-
   const [formData, setFormData] = useState({});
+  const [serverError,setServerError]= useState(false);
 
-  
   //show password code
   const [showPassword, setShowPassword] = useState(false);
+  useEffect(()=>{
+    setTimeout(()=>{
+    setServerError(false);
+    },5000)
+
+  },[serverError])
 
   const handlechange = (e) => {
       setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -40,20 +48,27 @@ const SignIn = () => {
           body:JSON.stringify(formData)
        });
      
+       if (res.ok) {  
         
        const data= await res.json();
-       if ( data.success === false) {
-        console.log(data);
+       if ( data.success === false) 
+        {console.log(data);
          dispatch(signInFailure(data.message));}
        
- 
-       if (res.ok) {
+       else{
          dispatch(signInSuccess(data));
          navigate('/');
+       }}
+       else
+       {
+    
+       setServerError(true);
+       
        }
        
     }catch(error)
     {
+      
     dispatch(signInFailure(error.message))
 
     }
@@ -62,6 +77,15 @@ const SignIn = () => {
 
   return (
     <div className="min-h-screen min-w-screen max-w-screen">
+    {serverError && <Toast>
+        <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-500 dark:bg-orange-700 dark:text-orange-200">
+          <HiExclamation className="h-5 w-5" />
+        </div>
+        <div className="ml-3 text-sm font-normal">Internal Server Error</div>
+        <Toast.Toggle />
+
+      </Toast>}
+
       <div className="flex flex-row mx-auto mt-20 p-8 gap-20  max-w-5xl ">
         {/* left */}
         <div className="flex-1">
@@ -137,9 +161,7 @@ const SignIn = () => {
 
           </form>
 
-          <Button gradientDuoTone="purpleToBlue" className="mt-4">
-            Continue with Google
-          </Button>
+          <OAuth></OAuth>
 
           <div className="flex flex-row text-sm mt-1">
             <span>New User?</span>

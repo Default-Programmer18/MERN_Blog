@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import signup_img from "../assets/signup_img.jpg";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import OAuth from "../components/OAuth";
 
 const SignUp = () => {
   const navigate=useNavigate();
@@ -223,9 +224,7 @@ const handleConfirmPass=(e)=>{
 
           </form>
 
-          <Button gradientDuoTone="purpleToBlue" className="mt-4">
-            Continue with Google
-          </Button>
+          <OAuth></OAuth>
 
           <div className="flex flex-row text-sm mt-3">
             <span>Have an account?</span>
