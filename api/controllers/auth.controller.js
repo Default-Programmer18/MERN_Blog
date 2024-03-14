@@ -99,7 +99,7 @@ const google= async(req,res,next)=>{
             username:  username.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-4),
             password:hashedPassword,
             email,
-            profitePicture:googlePhotoUrl
+            profilePicture:googlePhotoUrl
           })
         
         await newUser.save();

@@ -5,6 +5,7 @@ import { app } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signInSuccess,signInFailure,signInStart } from '../redux/user/userSlice';
+import { useState , useEffect} from 'react';
 
 
 const OAuth = () => {
@@ -13,9 +14,11 @@ const OAuth = () => {
 const auth=getAuth(app);
 const [serverError,setServerError]= useState(false);
 
+
   //show password code
   
   useEffect(()=>{
+
     setTimeout(()=>{
     setServerError(false);
     },5000)
