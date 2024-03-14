@@ -2,11 +2,15 @@ import React from 'react'
 import {Avatar, Button, Dropdown, Navbar, TextInput} from 'flowbite-react'
 import { Link, useLocation } from 'react-router-dom'
 import { AiOutlineSearch } from "react-icons/ai";
-import {FaMoon} from "react-icons/fa";
-import { useSelector } from 'react-redux';
+import {FaMoon,FaSun} from "react-icons/fa";
+import { useSelector ,useDispatch} from 'react-redux';
+import { toggleTheme} from "../redux/theme/themeSlice.js"
 const Header = () => {
+  // const {toogleTheme}=useSelector(state=>state.theme)
   const path=useLocation().pathname;
   const {currentUser}=useSelector(state=>state.user)
+  const { theme } = useSelector((state) => state.theme);
+  const dispatch=useDispatch()
   return (
     <Navbar className='border-b-2'>
         <Link to="/" className="self-center  whitespace-nowrap font-semibold text-sm sm:text-xl dark:text-white rounded-md">
@@ -24,6 +28,14 @@ const Header = () => {
         <Button className='w-10 h-10 lg:hidden ' color="gray" pill><AiOutlineSearch/></Button>
        
         <div className='flex gap-2 md:order-2'> 
+        <Button
+          className='w-12 h-10 hidden sm:inline'
+          color='gray'
+          pill
+          onClick={()=>dispatch(toggleTheme())}
+        >
+          {theme === 'light' ? <FaSun /> : <FaMoon />}
+        </Button>
         {currentUser?(<Dropdown
             arrowIcon={false} 
             inline
@@ -45,7 +57,7 @@ const Header = () => {
             <Button gradientDuoTone="purpleToBlue" outline>Sign In</Button>
             </Link>)
             }
-            <Button className='w-12 h-10  hidden sm:inline   ' color="gray" pill><FaMoon/></Button>
+            
            
             <Navbar.Toggle/> 
         </div>
