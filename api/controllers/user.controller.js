@@ -23,7 +23,7 @@ const updateUser=async(req,res,next)=>{
              return next(errorHandler(400,"Username must not contain space"))
         if(!req.body.username.match(/^[a-zA-Z0-9]+$/))
              return next(errorHandler(400,"Username must contain only letters and numbers"))
-
+     }
         try{
             const updatedUser= await User.findByIdAndUpdate(req.params.userId,{
                 //set only update fields which are present
@@ -35,7 +35,7 @@ const updateUser=async(req,res,next)=>{
                 },
             },{new:true}//this makes the func return uppdated info otherwise returns old info
             )
-            console.log(updatedUser)
+            
             const {password, ...rest}=updatedUser._doc
             res.status(200).json(rest)
         }
@@ -43,11 +43,28 @@ const updateUser=async(req,res,next)=>{
         {
             return next(error)
         }
-     }
+     
     
 };
+
+const deleteUser = async (req,res,error)=>{
+    if(req.user.id!==req.params.userId)
+    {
+        return next(errorHandler(403,"You are not allowed to delete the user."))
+    }
+    try{
+            await User.findByIdAndDelete(req.params.userId);
+            res.status(200).json("User has been deleted")
+    }
+    catch(error)
+    {
+        next(error)
+    }
+}
+
 module.exports={
-    updateUser
+    updateUser,
+    deleteUser
 }
 
 
