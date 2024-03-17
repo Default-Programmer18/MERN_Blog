@@ -45,7 +45,8 @@ const signin = async (req, res, next) => {
         const validPassword = bcryptjs.compareSync(password, validUser.password);
         if (!validPassword) return next(errorHandler("400", "Invalid password"));
         const token = jwt.sign(
-            { id: validUser._id },
+            { id: validUser._id ,
+                isAdmin:validUser.isAdmin},
             process.env.JWT_SECRET
             // {
             //     expiresIn:3600
@@ -77,7 +78,8 @@ const google= async(req,res,next)=>{
         if(validUser)
         {
             const token=jwt.sign({
-                id:validUser._id,},
+                id:validUser._id,
+                isAdmin:validUser.isAdmin},
                 process.env.JWT_SECRET
             )
             const { password: pass, ...rest } = validUser._doc;
@@ -104,7 +106,8 @@ const google= async(req,res,next)=>{
         
         await newUser.save();
         const token=jwt.sign({
-            id:validUser._id,},
+            id:validUser._id,
+            isAdmin:validUser.isAdmin},
             process.env.JWT_SECRET
         )
         const { password: pass, ...rest } = newUser._doc;

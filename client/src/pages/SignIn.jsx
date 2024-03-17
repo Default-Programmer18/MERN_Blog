@@ -39,7 +39,7 @@ const SignIn = () => {
     }
     //console.log(formData);
     try{
-     dispatch(signInStart)
+     dispatch(signInStart())
        const res=await fetch('/api/auth/sign-in',{
           method: 'POST',
           headers:{

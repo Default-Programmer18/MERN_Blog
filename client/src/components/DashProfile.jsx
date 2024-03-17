@@ -12,10 +12,11 @@ import { getStorage, ref } from "firebase/storage";
 import {app} from "../firebase"
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updateFailure,updateStart,updateSuccess,deleteFailure,deleteStart ,deleteSuccess} from '../redux/user/userSlice';
+import { updateFailure,updateStart,updateSuccess,deleteFailure,deleteStart ,deleteSuccess,signoutSuccess} from '../redux/user/userSlice';
+import { Link } from 'react-router-dom';
 
 const DashProfile = () => {
-  const {currentUser,error}=useSelector((state)=>state.user)
+  const {currentUser,loading}=useSelector((state)=>state.user)
   const dispatch=useDispatch()
   const[imageFile,setImageFile]=useState(null);
   const[imageFileUrl,setImageFileUrl]=useState(null);
@@ -240,6 +241,27 @@ const DashProfile = () => {
 
   } 
   //del user//////////////////////////////////////////////
+
+  const handleSignOut=async()=>{
+    try{
+
+      const res = await fetch("/api/user/signout",{
+        method: 'POST',
+        
+      })
+      const data = await res.json();
+      if(!res.ok)
+      {setUpdateUserError(data.message)}
+    else
+    {dispatch(signoutSuccess())}
+    
+
+    }
+    catch(error){
+      console.log(error.message)
+      setUpdateUserError(error.message)
+    }
+  }
   return (
     <div className="max-w-lg mt-5 mx-auto" >
     <div className='text-center font-semibold mb-5 text-2xl'>Profile</div>
@@ -303,11 +325,18 @@ const DashProfile = () => {
             
            }
 
-      <Button  gradientDuoTone="purpleToBlue" outline type="submit" className='mt-3'>Update</Button>
+      <Button  gradientDuoTone="purpleToBlue" outline type="submit" className='mt-3' disabled={loading|| imageFileUploading}>
+     {loading?"Loading...":"Update"}</Button>
+        
+        {currentUser.isAdmin &&
+          <Link to={"/create-post"}>
+      <Button gradientDuoTone="purpleToPink"className='mt-3 w-full' >Create a post</Button>
+      </Link>}
+
 
       <div className=' flex  justify-between mt-2  text-red-500'>
         <span onClick={()=>setShowModal(true)} className='cursor-pointer hover:font-semibold'>Delete Profile </span>
-        <span className='cursor-pointer hover:font-semibold'>Sign Out</span>
+        <span className='cursor-pointer hover:font-semibold' onClick={handleSignOut}>Sign Out</span>
       </div>
 
       {updateUserSuccess && <Alert color="success" className='mt-3'>{updateUserSuccess}</Alert>}
