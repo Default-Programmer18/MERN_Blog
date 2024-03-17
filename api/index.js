@@ -2,6 +2,7 @@ const express = require('express');
 const app= express();
 const userRoutes =require('./routes/user.route.js');
 const authRoutes =require('./routes/auth.route.js');
+const postRoutes=require("./routes/post.route.js")
 const cookieParser = require('cookie-parser');
 /////////////////////////////////////database///////////////////////////////////////////
 const  {connectToMongoDb}=require('./connectionDb/connectionMongoDb.js');
@@ -31,6 +32,7 @@ app.listen(process.env.PORT,()=>{
 
 app.use("/api/user/",userRoutes);
 app.use("/api/auth/",authRoutes);
+app.use("/api/post/",postRoutes);
 
 //middleware 
 app.use((err,req,res,next)=>{
