@@ -5,10 +5,10 @@ import { Modal } from 'flowbite-react';
 import  { BsFillExclamationOctagonFill } from "react-icons/bs";
 import {
   getDownloadURL,
-  
+  getStorage, ref,
   uploadBytesResumable,
 } from 'firebase/storage';
-import { getStorage, ref } from "firebase/storage";
+
 import {app} from "../firebase"
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';

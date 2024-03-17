@@ -1,9 +1,78 @@
-import React from 'react'
-import {Button, FileInput, Select, TextInput} from "flowbite-react"
+import React, { useState } from 'react'
+import {Alert, Button, FileInput, Select, TextInput} from "flowbite-react"
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import {
+  getDownloadURL,
+getStorage, ref,
+uploadBytesResumable,
+} from 'firebase/storage';
+import { app } from '../firebase';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+
 
 const CreatePost = () => {
+  const[file,setFile]=useState(null);
+  const [imageUploadProgress,setImageUploadProgress]=useState(null)
+  const[imageUploadError,setImageUploadError]=useState(null)
+  const [imageUrl,setImageUrl]=useState(null)
+  const [formData,setFormData]=useState({})
+
+    
+  const handleUploadImage=async()=>{
+    if(!file)
+    {
+      setImageUploadError("Please choose an image to upload...")
+      return;
+    }
+   
+    const storage = getStorage(app);
+    const fileName = new Date().getTime()+"-" + file.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef,file);
+    try{
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+          setImageUploadProgress(progress.toFixed(0));
+          setImageUploadError(null)
+        //console.log("progress",progress)
+      },
+      (error) => {
+        setImageUploadError(
+          'Could not upload image (File must be less than 2MB)'
+        );
+          //console.log("error",error)
+          setImageUploadProgress(null)
+          
+        
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageUploadProgress(null)
+          setImageUploadError(null)
+          setImageUrl(downloadURL)
+          setFormData({...formData,image:downloadURL})
+          
+        
+        });
+      }
+    );
+    }
+    catch(error)
+    {
+      setImageUploadProgress(null)
+      setImageUploadError("Image upload failed...")
+      console.log(error)
+
+    }
+
+
+  }
   return (
     <div className='max-w-3xl  min-h-screen p-3 mx-auto mt-5'>
     <h1 className='text-center font-semibold text-3xl mb-6'>
@@ -20,12 +89,23 @@ const CreatePost = () => {
         </Select>
     </div> 
     <div className='flex flex-col sm:flex-row  justify-between items-center gap-4 border-4 border-teal-500 border-dotted p-3'>
-      <FileInput type="file" accept="image/*"></FileInput>
-      <Button gradientDuoTone="purpleToBlue" size="sm">Upload Image</Button>
+      <FileInput type="file" accept="image/*" onChange={(e)=>{setFile(e.target.files[0])}}></FileInput>
+      <Button gradientDuoTone="purpleToBlue" outline  size="sm" onClick={handleUploadImage} disabled={imageUploadProgress}>
+      {imageUploadProgress? (
+      <div className='w-16 h-16'>
+        <CircularProgressbar  value={imageUploadProgress} text={`${imageUploadProgress|| 0}%`}/>
+      </div>):("Upload Image")}
+      
+      </Button>
     </div>
+    {formData.image && 
+      <img src={formData.image} alt="Uploaded Image " className='w-full h-72 object-cover'></img>}
+      
+    {imageUploadError && <Alert color="failure">{imageUploadError}</Alert>}
     <ReactQuill theme="snow" placeholder='Write something...' className='h-72 mb-3'></ReactQuill>
     <Button gradientDuoTone="purpleToPink" type="submit">Publish</Button>
     </form>
+    
     </div>
   )
 }
