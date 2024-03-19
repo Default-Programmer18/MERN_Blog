@@ -53,8 +53,12 @@ const { errorHandler } = require("../utils/errorHandler");
                     {content:{$regex:req.query.searchTerm, $options:"i"}}
                 ]
 
-            })
-         } ).sort({updtedAt:sortDirection}).skip(startIndex).limit(limit);
+            }),
+         } )
+         .sort({ updatedAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+
             // It skips a number of documents specified by startIndex and limits the number of documents returned by limit.;
          const totalPosts=await Post.countDocuments();
          
@@ -81,7 +85,26 @@ const { errorHandler } = require("../utils/errorHandler");
  }
 
 
+ const deletePost=async(req,res,next)=>{
+  
+
+        if(!req.user.isAdmin || req.user.id!==req.params.userId ){
+            return next(errorHandler((403,"You do not have permission to delete the post.")));
+        }
+        try{
+            
+            const result=await Post.findByIdAndDelete(req.params.postId)
+            res.status(200).json("Post has been deleted")
+    }
+
+    catch(error)
+    {
+        next(error)
+    }
+ }
+
  module.exports={
     create,
     getPosts,
+    deletePost,
  }
