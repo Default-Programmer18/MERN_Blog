@@ -165,7 +165,7 @@ useEffect(() => {
     <button className="text-teal-400 hover:text-teal-600 self-center w-full font-semibold p-4" onClick={handleShowMore}>
      Show More</button>}
      {showSuccess && <Alert color="success">{showSuccess}</Alert>}
-     {showError && <Alert color="error">{showError}</Alert>}   
+     {showError && <Alert color="failure">{showError}</Alert>}   
      
      
      </div>)
@@ -175,9 +175,9 @@ useEffect(() => {
        
         <div className="flex flex-col justify-center items-center my-20 flex-1 ">
  
- <img src={noBlog} className='w-[50%] h-[50%]'></img> 
+ <img src={noBlog} className='w-[32%] h-[32%]'></img> 
          <h1 className='font-semibold text-2xl'>You have no post yet... </h1>
-        <h3 className='mt-6  text-blue-700 font-bold  '>Tech up your voice!!!</h3>
+        <h2 className='mt-6  font-bold  text-teal-500 '>Tech up your voice!!!</h2>
         
         <Link to={"/create-post"} as="div">
       <Button  gradientDuoTone="purpleToBlue"className='mt-3 ' >Create a post</Button>
@@ -197,7 +197,8 @@ useEffect(() => {
            <div className='flex justify-center gap-5 mt-6'>
             <Button color="failure" onClick={handleDeletePost}>Yes,I'm sure</Button>
             <Button  color="gray" onClick={()=>setShowModal(false)}>No,cancel</Button>
-           </div></Modal.Body>
+           </div>
+           </Modal.Body>
 
       </Modal>
 

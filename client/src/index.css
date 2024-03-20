@@ -8,3 +8,106 @@ body{
 .ql-editor{
     font-size: 1.05rem;
 }
+.post-content p {
+    margin-bottom: 0.7rem;
+  }
+  
+  .post-content h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    margin: 1.3rem 0;
+  }
+  
+  .post-content h2 {
+    font-size: 1.4rem;
+    font-family: sans-serif;
+    margin: 1.3rem 0;
+  }
+  .post-content h4 {
+    font-size: 1.0rem;
+    font-weight: 500;
+    font-family: sans-serif;
+    margin: 1rem 0;
+  }
+  
+  .post-content h3 {
+    font-size: 1.2rem;
+    font-family: sans-serif;
+    margin: 1rem 0;
+  }
+  
+  .post-content a {
+    color: rgb(73, 149, 199);
+    text-decoration: none;
+  }
+  
+  .post-content a:hover {
+    text-decoration: underline;
+  }
+  
+  .dark .post-content a {
+    font-weight: 900;
+    color: rgb(73, 149, 199);
+    text-decoration: none;
+
+  }
+
+  .dark .post-content  code {
+    margin: 1rem 0;
+    font-family: Consolas, monospace;
+    background-color: #f0f0f0;
+    padding: 5px 5px;
+    border-radius: 3px;
+    color:white
+   
+}
+
+/* Style for block code */
+.post-content pre {
+    margin: 1rem 0;
+    
+    font-family: Consolas, monospace;
+    background-color:black;
+    color:white;
+
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto; /* Enable horizontal scrolling if needed */
+}
+.post-content  code {
+    font-family: Consolas, monospace;
+    background-color:black;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+/* Style for block code */
+.dark .post-content pre {
+    margin: 1rem 0;
+    font-family: Consolas, monospace;
+    background-color:black;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto; /* Enable horizontal scrolling if needed */
+}
+
+/* Optional: Add line numbers to block code */
+.post-content  pre.line-numbers {
+    position: relative;
+    counter-reset: line;
+}
+.post-content pre.line-numbers code {
+    white-space: inherit; /* Ensure code stays in a single line */
+}
+.post-content pre.line-numbers code:before {
+    content: counter(line);
+    counter-increment: line;
+    position: absolute;
+    left: -2em;
+    width: 2em;
+    text-align: right;
+    color: #999;
+    border-right: 1px solid #999;
+    padding-right: 0.5em;
+}

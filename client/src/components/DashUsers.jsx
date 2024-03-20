@@ -67,7 +67,8 @@ const handleShowMore=async()=>{
 const handleDeleteUser=async()=>{
   setShowModal(false)
   try{
-    const res=await fetch(`/api/user/deleteUser/${userIdToDelete}/${currentUser._id}`,{
+    console.log(userIdToDelete)
+    const res=await fetch(`/api/user/delete/${userIdToDelete}`,{
       method:"DELETE"
     })
     const data=await res.json();
@@ -149,7 +150,7 @@ useEffect(() => {
         <span   className='text-red-600 hover:underline font-semibold cursor-pointer' 
         onClick={()=>{
           setShowModal(true)
-          setUserIdToDelete(users._id)
+          setUserIdToDelete(user._id)
         }}>
         Delete</span>
           </Table.Cell>
@@ -165,14 +166,14 @@ useEffect(() => {
     <button className="text-teal-400 hover:text-teal-600 self-center w-full font-semibold p-4" onClick={handleShowMore}>
      Show More</button>}
      {showSuccess && <Alert color="success">{showSuccess}</Alert>}
-     {showError && <Alert color="error">{showError}</Alert>}   
+     {showError && <Alert color="failure">{showError}</Alert>}   
      
     
      </div>):
      ( 
         <div className="flex flex-col justify-center items-center my-20 flex-1 ">
  
-         <img src={noUser} className='w-[40%] h-[40%]'></img> 
+         <img src={noUser} className='w-[25%] h-[25%]'></img> 
          <h1 className='font-semibold text-2xl'>You have no users yet... </h1>
        
         
