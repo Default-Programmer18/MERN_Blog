@@ -87,7 +87,7 @@ const getUsers=async(req, res, next)=>{
 
         //array returned
         const usersWithoutPassword=users.map((user)=>{
-            const{password,...rest}=user._doc
+            const {password,...rest}=user._doc
             return rest
         })
         const totalUsers=await User.countDocuments()
@@ -111,13 +111,31 @@ const getUsers=async(req, res, next)=>{
     }
 
 }
+//get user by id
+    const getUser= async (req,res,next)=>{
+        try{
+            const user=await User.findById({_id:req.params.userId})
+            if(!user) 
+            return next(errorHandler(404,"User Not Found..."))
+          
+           const {password,...rest}=user._doc
+          
+            res.status(200).json(rest)
 
+        }
+        catch(error)
+        {
+            next(error)
+        }
+        
+    }
 
 module.exports={
     updateUser,
     deleteUser,
     signout,
-    getUsers
+    getUsers,
+    getUser
 }
 
 

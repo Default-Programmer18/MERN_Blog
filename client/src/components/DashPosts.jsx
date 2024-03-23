@@ -135,7 +135,7 @@ useEffect(() => {
         <Table.Row  className='bg-white  dark:border-gray-700 dark:bg-gray-800'>
           <Table.Cell>{new Date(post.updatedAt).toLocaleDateString()}</Table.Cell>
           <Table.Cell>
-          <Link to={`post/${post.slug}`} as="div">
+          <Link to={`/post/${post.slug}`} as="div">
             <img src={post.image} alt={post.title} className='object-cover  w-20 h-10 bg-gray-500' />
             </Link>
           </Table.Cell>

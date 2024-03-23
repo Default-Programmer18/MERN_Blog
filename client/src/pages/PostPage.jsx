@@ -2,6 +2,7 @@ import { Button, Spinner } from 'flowbite-react'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import CommentSection from '../components/CommentSection'
 
 const PostPage = () => {
  
@@ -53,7 +54,7 @@ const PostPage = () => {
  }
 
   return (
-    <main className='flex flex-col min-h-screen max-w-7xl mx-4 p-3 '>
+    <main className='flex flex-col min-h-screen max-w-7xl mx-auto p-3   '>
         <h1 className='text-center text-3xl  lg:text-4xl p-3 mt-10 font-serif mx-auto max-w-2xl'>{post && post.title}</h1>
         {post && post.category && 
         <Link to={`/search?category=${post.category}`} >
@@ -78,8 +79,11 @@ const PostPage = () => {
 
         </div>
 
+        <CommentSection postId={post._id}/>
         
     </main>
+
+   
   )
 }
 
