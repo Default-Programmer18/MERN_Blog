@@ -1,14 +1,17 @@
 import { Alert, Button, Textarea } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Comment  from "../components/Comment.jsx"
 
 const CommentSection = ({postId}) => {
     const {currentUser} = useSelector((state)=>state.user)
+    //for putting the test
     const [comment,setComment]=useState("")
+    //all coment fetching
     const[comments,setComments]=useState([])
     const [commentError,setCommentError]=useState(null)
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -64,6 +67,52 @@ const CommentSection = ({postId}) => {
       getComments();
       },[postId])
 
+const handleLike=async(commentId)=>{
+  console.log("called")
+  if(!currentUser)
+  {
+      navigate("/sign-in")
+      return;
+  }
+  try{
+    const res=await fetch(`/api/comment/likeComment/${commentId}`,{
+      method:"PUT",
+     
+     
+    })
+    if(res.ok)
+    {
+      const data=await res.json()
+      // console.log("-------------------------------")
+      // console.log("comments")
+      // console.log(comments)
+      // console.log("-------------------------------")
+     
+      // console.log(data)
+      // console.log("-------------------------------")
+      setComments(comments.map(comment => {
+        return comment._id===commentId? {
+          ...comment,
+          numberOfLikes:data.numberOfLikes,
+          likes:data.likes
+        }
+        :
+        comment;
+        console.log(comment)
+      }))
+
+     
+    }
+
+  }
+  catch(error)
+  {
+    console.log(error)
+  }
+
+console.log(comments)
+
+}
   return (
     <div className='max-w-2xl mx-auto w-full p-3'>
         {
@@ -116,13 +165,14 @@ const CommentSection = ({postId}) => {
           comments.map((commentElement)=>(
           <Comment  key={comment._id}
             comment={commentElement}
+            onLike={handleLike}
           />
 
           ))
         } 
         </div>
         </>)}
-        {commentError && <Alert color="failure">{commentError}</Alert>}
+        {commentError && <Alert color="failure" >{commentError} </Alert>}
 
     </div>
   )

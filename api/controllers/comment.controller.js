@@ -1,4 +1,5 @@
 const Comment=require('../models/comment.model.js');
+const { errorHandler } = require('../utils/errorHandler.js');
 
 
 const createComment= async(req,res,next)=>{
@@ -42,8 +43,36 @@ const createComment= async(req,res,next)=>{
 
  }
 
+ const likeComment= async(req,res,next)=>{
+    try{
+        const comment=await Comment.findById(req.params.commentId)
+       
+        if(!comment)
+        return next(errorHandler(404,"No such comment exists"))
+        
+        const userIndex=comment.likes.indexOf(req.user.id)
+        if(userIndex===-1)
+        {
+            comment. numberOfLikes+=1;
+            comment.likes.push(req.user.id)
+        }
+        else
+        {
+            comment. numberOfLikes-=1;
+        comment.likes.splice(userIndex,1)
+        }
+        await comment.save();
+        return res.status(200).json(comment)
+    }
+    catch(error) {
+        next(error)
+    }
+
+ }
+
 
  module.exports ={
      createComment,
-     getPostComments
+     getPostComments,
+     likeComment
     }
