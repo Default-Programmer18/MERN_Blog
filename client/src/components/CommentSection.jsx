@@ -36,9 +36,9 @@ const CommentSection = ({ postId }) => {
           userId: currentUser._id,
         }),
       });
-      console.log(res);
+    
       const data = await res.json();
-      console.log(res.ok);
+     
       if (res.ok) {
         setComment("");
         setCommentError(null);
@@ -59,17 +59,17 @@ const CommentSection = ({ postId }) => {
         if (getPostComments.ok) {
           const data = await getPostComments.json();
           setComments(data);
-          console.log(data);
+        
         }
       } catch (error) {
-        console.log(error);
+        toast.error(error.message);
       }
     };
     getComments();
   }, [postId]);
 
   const handleLike = async (commentId) => {
-    console.log("called");
+    
     if (!currentUser) {
       navigate("/sign-in");
       return;
@@ -94,7 +94,7 @@ const CommentSection = ({ postId }) => {
         );
       }
     } catch (error) {
-      console.log(error);
+     toast.error(error.message);
     }
   };
 

@@ -24,13 +24,12 @@ const Comment = ({ comment, onLike ,onEdit,onDelete}) => {
           setUser(data);
         }
       } catch (error) {
-        console.log(error.message);
+        toast.error(error.message)
       }
     };
     getUsers();
   }, [comment]);
-  console.log("0-------------------------");
-  // console.log(comment.createdAt)
+
 
  const handleEdit=async()=>{
   setIsEditing(true)
@@ -55,7 +54,7 @@ const Comment = ({ comment, onLike ,onEdit,onDelete}) => {
 }
   catch(error)
   {
-    console.log(error)
+   toast.error(error.message)
   }
  }
 

@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import CommentSection from '../components/CommentSection'
+import toast from 'react-hot-toast'
+import PostCard from '../components/PostCard'
 
 const PostPage = () => {
  
@@ -10,7 +12,31 @@ const PostPage = () => {
     const[loading,setLoading]=useState(true);
     const [error,setError]=useState(null)
     const [post,setPost]=useState(null)
-    console.log(post)
+    const[recentPost,setRecentPost]=useState(null)
+
+
+    useEffect(() =>{
+      const fetchRecentPosts =async()=>{
+        try{
+          const res=await fetch('/api/post/getPosts?limit=3')
+         
+          if(res.ok)
+          {
+            const data=await res.json()
+            console.log(data)
+            setRecentPost(data.posts)
+          }
+          
+        }
+        catch(error){
+            toast.error("Recent posts cannot be fetched")
+        }
+  
+      }
+      fetchRecentPosts();
+  
+   },[])
+    
 
  
  useEffect(()=>{
@@ -53,6 +79,8 @@ const PostPage = () => {
     )
  }
 
+ 
+
   return (
     <main className='flex flex-col min-h-screen max-w-7xl mx-auto p-3   '>
         <h1 className='text-center text-3xl  lg:text-4xl p-3 mt-10 font-serif mx-auto max-w-2xl'>{post && post.title}</h1>
@@ -80,6 +108,20 @@ const PostPage = () => {
         </div>
 
         <CommentSection postId={post._id}/>
+
+        <div className='flex flex-col gap-2 justify-center items-center'>
+          <h1 className='text-xl my-3 font-semibold'>Recent Articles</h1>
+        
+          <div className='flex flex-wrap gap-3 justify-center items-center'>
+            {recentPost && recentPost.map((post)=>(
+              
+              <PostCard key={post._id}  post={post}/>
+            ))}
+          </div>
+
+
+
+        </div>
         
     </main>
 

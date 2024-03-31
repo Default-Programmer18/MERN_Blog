@@ -139,7 +139,7 @@ useEffect(() => {
             <img src={post.image} alt={post.title} className='object-cover  w-20 h-10 bg-gray-500' />
             </Link>
           </Table.Cell>
-          <Table.Cell><Link to={`post/${post.slug}`} as="div" className='font-medium text-gray-900 dark:text-white'>{post.title}</Link></Table.Cell>
+          <Table.Cell><Link to={`/post/${post.slug}`} as="div" className='font-medium text-gray-900 dark:text-white'>{post.title}</Link></Table.Cell>
           <Table.Cell>{post.category}</Table.Cell>
           <Table.Cell>
         <span   className='text-red-600 hover:underline font-semibold cursor-pointer' 
