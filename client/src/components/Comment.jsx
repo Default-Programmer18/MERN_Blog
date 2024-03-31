@@ -4,7 +4,7 @@ import { FaThumbsUp } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Button, Textarea } from "flowbite-react";
 
-const Comment = ({ comment, onLike ,onEdit}) => {
+const Comment = ({ comment, onLike ,onEdit,onDelete}) => {
   //get users info of the comment
   const { currentUser } = useSelector((state) => state.user);
 
@@ -58,6 +58,8 @@ const Comment = ({ comment, onLike ,onEdit}) => {
     console.log(error)
   }
  }
+
+
 
   return (
     <div className="flex gap-2 mt-5  pb-4 border-b dark:border-gray-600">
@@ -122,6 +124,7 @@ const Comment = ({ comment, onLike ,onEdit}) => {
                     ' ' +
                     (comment.numberOfLikes === 1 ? 'like' : 'likes')}
               </p>
+              <>
               {
                 currentUser && currentUser._id === comment.userId && 
                 (<button
@@ -132,6 +135,16 @@ const Comment = ({ comment, onLike ,onEdit}) => {
                 </button>)
               }
      
+              {
+                currentUser && currentUser._id === comment.userId && 
+                (<button
+                  type='button'
+                onClick={() =>onDelete(comment._id)}
+                className="text-gray-400 hover:text-blue-500">
+                Delete
+                </button>)
+              }
+              </>
 
         </div>
         </>  

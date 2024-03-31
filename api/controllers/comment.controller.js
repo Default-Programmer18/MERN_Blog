@@ -91,11 +91,30 @@ const createComment= async(req,res,next)=>{
     }
 
  }
+ const deleteComment= async(req,res,next)=>{
+    try{
+        const comment=await Comment.findById(req.params.commentId)
+       
+        if(!comment)
+        return next(errorHandler(404,"No such comment exists"))
+        
+        if(req.user.id!==comment.userId && !req.isAdmin)
+        return next(errorHandler(404,"No such comment exists"))
+     
+       const deletedComment=await Comment.findByIdAndDelete(req.params.commentId)
+       console.log(deletedComment)
+        return res.status(200).json("Commnet has been deleted");
+    }
+    catch(error) {
+        next(error)
+    }
+
+ }
 
 
  module.exports ={
      createComment,
      getPostComments,
      likeComment,
-     editComment
+     editComment,deleteComment
     }
