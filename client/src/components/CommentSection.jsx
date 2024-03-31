@@ -83,13 +83,7 @@ const handleLike=async(commentId)=>{
     if(res.ok)
     {
       const data=await res.json()
-      // console.log("-------------------------------")
-      // console.log("comments")
-      // console.log(comments)
-      // console.log("-------------------------------")
-     
-      // console.log(data)
-      // console.log("-------------------------------")
+      
       setComments(comments.map(comment => {
         return comment._id===commentId? {
           ...comment,
@@ -109,8 +103,12 @@ const handleLike=async(commentId)=>{
   {
     console.log(error)
   }
+}
 
-console.log(comments)
+const handleEdit=async(comment,editedComment)=>{
+  setComments(comments.map((c)=>{
+    return c._id===comment._id? {...c,content:editedComment}:c;
+  }))
 
 }
   return (
@@ -166,6 +164,7 @@ console.log(comments)
           <Comment  key={comment._id}
             comment={commentElement}
             onLike={handleLike}
+            onEdit={handleEdit}
           />
 
           ))
