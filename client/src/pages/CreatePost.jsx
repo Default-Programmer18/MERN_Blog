@@ -132,9 +132,10 @@ useEffect(() => {
         onChange={(e)=>{
           setFormData({...formData, category: e.target.value})
         }} required>
-          <option value="uncategorized">Select a value</option>
-          <option value="javaScript">JavaScript</option>
-          <option value="react.js">React js</option>
+         <option value="uncategorized">uncategorized</option>
+                <option value="react js">React js</option>
+                <option value="javascript">Javascript</option>
+                <option value="Docker">Docker</option>
 
         </Select>
     </div> 

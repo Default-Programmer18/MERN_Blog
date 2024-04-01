@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {Avatar, Button, Dropdown, Navbar, TextInput} from 'flowbite-react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AiOutlineSearch } from "react-icons/ai";
 import {FaMoon,FaSun} from "react-icons/fa";
 import { useSelector ,useDispatch} from 'react-redux';
@@ -8,20 +8,46 @@ import { toggleTheme} from "../redux/theme/themeSlice.js"
 const Header = () => {
   // const {toogleTheme}=useSelector(state=>state.theme)
   const path=useLocation().pathname;
+  const navigate=useNavigate()
   const {currentUser}=useSelector(state=>state.user)
   const { theme } = useSelector((state) => state.theme);
   const dispatch=useDispatch()
+
+const[searchTerm,setSearchTerm]=useState("")
+useEffect(()=>{
+  const urlParams=new URLSearchParams(location.search)
+  
+  const searchTermFromUrl=urlParams.get('searchTerm')
+  // console.log("searchTermFromUrl")
+  // console.log(searchTermFromUrl)
+  if(searchTermFromUrl)
+    setSearchTerm(searchTermFromUrl)
+},[location.search])
+
+
+const handleSubmit=(e)=>{
+  e.preventDefault()
+  const urlParams=new URLSearchParams(location.search)
+  urlParams.set('searchTerm',searchTerm)
+  const searchQuery=urlParams.toString()
+  navigate(`/search?${searchQuery}`)
+
+  }
+
+
   return (
     <Navbar className='border-b-2'>
         <Link to="/" className="self-center  whitespace-nowrap font-semibold text-sm sm:text-xl dark:text-white rounded-md">
             <span className=' px-2 py-1 bg-gradient-to-r from-blue-500   via-purple-500 to-rose-500  text-white rounded-md'> Blog</span>space
         </Link>
-        <form>
+        <form onSubmit={handleSubmit}>
         <TextInput
             type="text"
             placeholder="Search..."
             rightIcon={AiOutlineSearch}
              className='hidden lg:inline'
+             value={searchTerm}
+             onChange={(e)=>{setSearchTerm(e.target.value)}}
         />
        
         </form>
