@@ -174,7 +174,7 @@ useEffect(() => {
         <div className="flex flex-col justify-center items-center my-20 flex-1 ">
  
          <img src={noUser} className='w-[25%] h-[25%]'></img> 
-         <h1 className='font-semibold text-2xl'>You have no users yet... </h1>
+         <h1 className='font-semibold text-2xl'>You have no user yet... </h1>
        
         
       </div>

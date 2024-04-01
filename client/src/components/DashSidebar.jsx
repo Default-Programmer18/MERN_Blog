@@ -1,6 +1,6 @@
 import  { useEffect, useState } from 'react'
 import {Sidebar} from 'flowbite-react'
-import {HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiUser, } from 'react-icons/hi'
+import {HiAnnotation, HiArrowSmRight, HiChartPie, HiDocumentText, HiOutlineUserGroup, HiUser, } from 'react-icons/hi'
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { signoutSuccess} from '../redux/user/userSlice';
@@ -49,6 +49,19 @@ const dispatch=useDispatch();
    <Sidebar className='w-full md:w-56 '>
       <Sidebar.Items>
       <Sidebar.ItemGroup>
+      
+      {currentUser.isAdmin &&
+             <Link to='/dashboard?tab=dash'>
+            <Sidebar.Item
+              active={tab === 'dash'||!tab}
+              icon={HiChartPie}
+              as='div'
+            >
+             Dashboard 
+            </Sidebar.Item>
+          </Link>}
+
+
           <Link to='/dashboard?tab=profile'>
             <Sidebar.Item
               active={tab === 'profile'}
@@ -82,6 +95,16 @@ const dispatch=useDispatch();
             </Sidebar.Item>
           </Link>}
          
+          {currentUser.isAdmin &&
+             <Link to='/dashboard?tab=comments'>
+            <Sidebar.Item
+              active={tab === 'comments'}
+              icon={HiAnnotation}
+              as='div'
+            >
+              Comments
+            </Sidebar.Item>
+          </Link>}
 
           
           <Sidebar.Item
